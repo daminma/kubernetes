@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - ingress-nginx
+    - ingress-nginx.ingress-nginx
     secretName: nginx-secret
   rules:
-  - host: ingress-nginx
+  - host: ingress-nginx.ingress-nginx
     http:
       paths:
         - path: /apple
