@@ -1,1 +1,6 @@
 kubectl run curl --image=radial/busyboxplus:curl -i --tty
+k cp tls.crt curl-66bdcf564-2b2kz:/tmp
+curl https://fruit:32216/apple --resolve fruit:32216:172.17.0.17 --cacert /tmp/tls.crt
+curl https://fruit:32216/apple --resolve fruit:32216:172.17.0.32 --cacert /tmp/tls.crt
+
+curl https://fruit/apple --resolve fruit:443:10.107.244.205 --cacert /tmp/tls.crt

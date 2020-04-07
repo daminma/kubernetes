@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: banana-pod
+  labels:
+    app: banana
+spec:
+  containers:
+    - name: banana-container
+      image: dma8888/kubernetes/http-echo
+      args:
+        - "-text=banana"

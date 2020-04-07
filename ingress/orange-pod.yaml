@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: orange-pod
+  labels:
+    app: orange
+spec:
+  containers:
+    - name: orange-container
+      image: dma8888/kubernetes/http-echo
+      args:
+        - "-text=orange"

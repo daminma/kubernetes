@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apple-deployment
+  labels:
+    app: apple
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apple
+  template:
+    metadata:
+      labels:
+        app: apple
+    spec:
+      containers:
+      - name: apple-container
+        image: dma8888/kubernetes/http-echo
+	  - "-text=apple"
