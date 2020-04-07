@@ -17,5 +17,5 @@ spec:
       containers:
       - name: orange-container
         image: dma8888/kubernetes/http-echo
-       args:
-         - "-text=orange"
+        args:
+          - "-text=orange"
