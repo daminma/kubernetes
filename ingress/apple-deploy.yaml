@@ -17,4 +17,5 @@ spec:
       containers:
       - name: apple-container
         image: dma8888/kubernetes/http-echo
+        args:
 	  - "-text=apple"

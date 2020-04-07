@@ -17,4 +17,5 @@ spec:
       containers:
       - name: banana-container
         image: dma8888/kubernetes/http-echo
+        args:
 	  - "-text=banana"
