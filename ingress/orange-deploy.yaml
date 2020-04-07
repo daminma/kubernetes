@@ -18,4 +18,4 @@ spec:
       - name: orange-container
         image: dma8888/kubernetes/http-echo
        args:
-	  - "-text=orange"
+         - "-text=orange"
