@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: count100
+spec:
+  template:
+    spec:
+      containers:
+      - name: count100
+        image: busybox
+        command: ["/bin/sh", "-c", "/script/run_me.sh"]
+        volumeMounts:
+        - name: cm-run-me
+          mountPath: /script/run_me.sh
+          subPath: run_me.sh
+      volumes:
+      - name: cm-run-me
+        configMap:
+          name: cm-run-me
+          defaultMode: 0777
+      restartPolicy: Never
+  backoffLimit: 4
