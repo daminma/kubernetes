@@ -1,0 +1,19 @@
+after apply all the yaml in nfs.yaml
+a storage class example-nfs is created with provisioner example.com/nfs
+and a deployment will create a pod (nfs-provisioner with /export directory create available for dynamic pvc
+if any deployment that need dynamic pvc, all it needes is to have the following
+included in the yaml file
+        volumeMounts:
+        - name: counter
+          mountPath: /app/
+  volumeClaimTemplates:
+  - metadata:
+      name: counter
+    spec:
+      accessModes: [ "ReadWriteMany" ]
+      storageClassName: example-nfs
+      resources:
+        requests:
+          storage: 50Mi
+
+a 50Mi will be allocated from /export directory in the nfs-provisioner pod.

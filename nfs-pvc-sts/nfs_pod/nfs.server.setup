@@ -1,0 +1,16 @@
+docker run -d --net=host --privileged --name nfs-server katacoda/contained-nfs-server:centos7 /exports/data-0001 /exports/data-0002
+
+ubuntu:
+# install NFS server
+apt install nfs-kernel-server
+mkdir -p /export/data
+chmod 777 /export/data
+echo "/export/data *(rw,sync,no_root_squash,no_subtree_check)" > /etc/exports
+systemctl start nfs-kernel-server.service
+exportfs -var
+
+apt install nfs-common
+mount example.hostname.com:/export/data /export/data
+
+# edit /etc/hosts file to add
+master_ip nfs-server
