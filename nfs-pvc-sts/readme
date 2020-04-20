@@ -1,6 +1,4 @@
-class.yaml
-rbac.yaml
 ip=$(kubectl get nodes -o wide | grep master | awk '{print $6}')
 sed 's/NFS_Server_IP/'"$ip"'/g' deployment.yaml > ./1
 cp 1 deployment.yaml
-deployment.yaml
+kubectl apply -f class.yaml -f rbac.yaml -f deployment.yaml
