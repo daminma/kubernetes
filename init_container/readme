@@ -1,0 +1,13 @@
+kubectl apply -f init_container.yaml
+
+kubectl get -f myapp.yaml
+
+kubectl describe -f myapp.yaml
+
+k logs myapp-pod -c init-myservice -f
+
+k apply -f init_myserrvice.yaml
+
+k logs myapp-pod -c init-mydb -f
+
+k apply -f init_mydb.yaml

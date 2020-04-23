@@ -1,4 +1,9 @@
 ip=$(kubectl get nodes -o wide | grep master | awk '{print $6}')
+ip=$(kubectl get node -o=jsonpath='{.items[0].status.addresses[0].address}')
+
 sed 's/NFS_Server_IP/'"$ip"'/g' deployment.yaml > ./1
 cp 1 deployment.yaml
 kubectl apply -f class.yaml -f rbac.yaml -f deployment.yaml
+
+kubectl exec -it counter-0 bash
+nslookup counter-headless-svc

@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dma-service
+spec:
+  selector:
+    app: apple
+  externalIPs:
+  - 172.17.0.60
+  ports:
+    - port: 8443
+      targetPort: 5678
+
+#When the dashboard was deployed, it used externalIPs to bind the service to port 8443. 
+#This makes the dashboard available to outside of the cluster and viewable at 
+#https://2886795324-8443-cykoria03.environments.katacoda.com/
+

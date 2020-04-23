@@ -1,0 +1,2 @@
+kubectl get events -w
+kubectl get pod -w
