@@ -1,0 +1,11 @@
+kubectl create namespace jenkins
+mkdir -p /var/jenkins/data # on all nodes
+chmod -R 777 /var/jenkins
+
+k exec -it jenkins-master-deployment-6d4bdbbddd-gd5n2 -n jenkins bash
+
+    1 jenkins   0:00 /sbin/tini -- /usr/local/bin/jenkins.sh
+    6 jenkins   0:33 java -Duser.home=/var/jenkins_home -Djenkins.install.runSetupWizard=false -Djenkins.model.Jenkins.slaveAgentPort=50000 -jar /usr/share/jenkins/jenkins.war
+
+/var/jenkins_home in the pod is same as /var/jenkins/data on the node
+

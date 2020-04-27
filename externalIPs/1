@@ -6,7 +6,7 @@ spec:
   selector:
     app: apple
   externalIPs:
-  - NODE_IP
+  - 12.34.45.6
   ports:
     - port: 8443
       targetPort: 5678
