@@ -1,6 +1,12 @@
 kubectl create namespace jenkins
 mkdir -p /var/jenkins/data # on all nodes
 chmod -R 777 /var/jenkins
+kubectl apply -f jenkins-pv.yaml
+kubectl apply -f jenkins-pvc.yaml
+kubectl apply -f jenkins-deployment.yaml
+
+node_ip
+kubectl apply -f externalip.yaml
 
 k exec -it jenkins-master-deployment-6d4bdbbddd-gd5n2 -n jenkins bash
 
