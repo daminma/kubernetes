@@ -2,9 +2,10 @@ kind: Service
 apiVersion: v1
 metadata:
   name: dma-service
+  namespace: jenkins
 spec:
   selector:
-    app: apple
+    app: jenkins-master
   externalIPs:
   - NODE_IP
   ports:

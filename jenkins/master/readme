@@ -1,3 +1,6 @@
+https://www.katacoda.com/courses/kubernetes/getting-started-with-kubeadm
+kubectl delete svc kubernetes-dashboard -n kube-system
+
 kubectl create namespace jenkins
 mkdir -p /var/jenkins/data # on all nodes
 chmod -R 777 /var/jenkins

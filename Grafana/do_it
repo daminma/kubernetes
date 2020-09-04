@@ -1,0 +1,24 @@
+# https://www.katacoda.com/courses/kubernetes/getting-started-with-kubeadm
+
+kubectl apply -f grafana-storage.yaml
+sleep 5
+kubectl apply -f grafana-deployment.yaml
+
+sleep 5
+pod=$(k get pod -l app=grafana | grep -v NAME | awk '{print $1}')
+sleep 30
+kubectl exec -it $pod  grafana-cli plugins install grafana-kubernetes-app
+kubectl scale deployment grafana --replicas=0
+sleep 30
+kubectl scale deployment grafana --replicas=1
+
+k delete svc -n kube-system kubernetes-dashboard
+
+git clone https://www.github.com/dma8888/kubernetes
+cd kubernetes/externalIPs
+./node_ip
+sed -e 's/apple/grafana/' -e 's/5678/3000/' externalip.yaml > abc.yaml
+cp abc.yaml externalip.yaml
+k apply -f externalip.yaml
+
+#https://2886795320-8443-kitek05.environments.katacoda.com/
