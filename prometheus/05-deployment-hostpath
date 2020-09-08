@@ -3,6 +3,7 @@
 
 ###############################################################################################################
 # create the deployment of prometheus
+cat > 05-deployment-hostpath.yaml << EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
