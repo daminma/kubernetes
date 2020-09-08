@@ -8,7 +8,9 @@
 03_externalip				# create the externalip service for grafana to be accessed via
 					# https://2886795320-8443-kitek05.environments.katacoda.com
 do_it					# read me
-node_ip					# get node ip for externalip
+node_ip					# get node ip for externalip and update 03_externalip.yaml for creating externalip
+					# service for grafana
+					# default port: 3000, login/pass: admin/admin
 
 
 # manual install grafana-kubernetes-app
@@ -17,7 +19,8 @@ pod=$(k get pod -l app=grafana | grep -v NAME | awk '{print $1}')
 sleep 30
 kubectl exec -it $pod  grafana-cli plugins install grafana-kubernetes-app
 # restart the pod to pickup the change, the new plugin will be install into the 
-# persistent storage /var/lib/grafana
+# persistent storage /var/lib/grafana/plugins/grafana-kubernetes-app
+
 kubectl scale deployment grafana --replicas=0
 sleep 30
 kubectl scale deployment grafana --replicas=1

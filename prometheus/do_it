@@ -1,0 +1,7 @@
+./01-namespace
+./02-serviceaccount
+./03-rbac
+on node
+mkdir /etc/prometheus
+scp  prometheus-kubelet-cadvisor-pod.yml node01:/etc/prometheus/prometheus.yml
+./05-deployment-hostpath

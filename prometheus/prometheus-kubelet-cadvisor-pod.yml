@@ -47,6 +47,12 @@ scrape_configs:
        action: replace
        target_label: kubernetes_pod_name
      - source_labels: [__meta_kubernetes_pod_label_grafanak8sapp]
+       regex: .*true.*
+       action: keep
+     - source_labels: ['__meta_kubernetes_pod_label_daemon', '__meta_kubernetes_pod_node_name']
+       regex: 'node-exporter;(.*)'
+       action: replace
+       target_label: nodename
    - job_name: 'kubernetes-pods'
      kubernetes_sd_configs:
      - role: pod

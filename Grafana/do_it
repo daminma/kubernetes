@@ -1,0 +1,6 @@
+./01_grafana-storage
+./02_grafana-deployment
+./02_grafana-kubernetes-app-deployment
+./03_externalip
+./node_ip
+kubecl apply -f 03_externalip.yaml

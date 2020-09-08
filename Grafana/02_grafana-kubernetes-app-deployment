@@ -1,4 +1,4 @@
-cat > > grafana-kubernetes-app-deployment.yaml <<EOF
+cat >> 02_grafana-kubernetes-app-deployment.yaml <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,7 +17,7 @@ spec:
         app: grafana
     spec:
       containers:
-      - image: grafana/grafana
+      - image: grafana/grafana:5.4.3
         name: grafana
         ports:
         - containerPort: 3000
