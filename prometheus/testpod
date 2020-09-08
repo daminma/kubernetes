@@ -1,0 +1,30 @@
+cat >testpod.yaml << EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: monitoring
+spec:
+  serviceAccountName: prometheus
+  containers:
+  - name: busybox
+    image: radial/busyboxplus:curl
+    command: ["sh", "-c", "sleep 6000"]
+EOF
+kubectl apply -f testpod.yaml
+
+# syntax
+# curl $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
+
+# k exec -it -n monitoring busybox -- sh
+# token=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`
+# curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes --header "Authorization: Bearer $token" --insecure
+
+# curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes/node01/proxy/metrics/cadvisor --header "Authorization: Bearer $token" --insecure
+# not working, after adding
+#   - nodes/proxy
+# to the clusterrole prometheus, it works 
+
+# this works too.
+# curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes/node01/proxy/metrics --header "Authorization:Bearer $token" --insecure
+

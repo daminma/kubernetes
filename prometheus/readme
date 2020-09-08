@@ -1,0 +1,47 @@
+
+deploy prometheus to kubernetes which you can access via
+https://2886795320-8443-kitek05.environments.katacoda.com
+1 got to
+https://www.katacoda.com/courses/kubernetes/getting-started-with-kubeadm
+and create the cluster
+2. install
+
+01-namespace		# create namespace for prometheus, put everything into namespace
+02-serviceaccount	# create service account
+03-rbac			# create clusterrole and clusterrolebinding 
+04-configmap  		# if you want to use the oonfigmap as volume approach  for prometheus configuration
+04-hostpath   		# if you want to use the hostpath as volume approach for prometheus configuration
+05-deployment-configmap # this deployment will use the configmap
+05-deployment-hostpath  # this deployment will use hostpath
+06-externalip 		# this will create a externalip service that allow you to access prometheus from
+https://2886795320-8443-kitek05.environments.katacoda.com
+06-service  		# this will just create a clusterip service for prometheus
+externalip.yaml 
+node_ip  		# run this to get the ip of the node and update 06-externalip.ymal
+prometheus.readme 	# overall general info readme
+readme 			# some howto testing info
+testpod 		# create a busybox pod wiht curl for testing purpose
+
+
+
+
+since we are using externalip.yaml to create the service,
+there is no need to run
+kubectl -f apply prometheus-svc.yaml
+to create the service as describe in the prometheus.readme file
+
+curl $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
+
+k exec -it -n monitoring busybox -- sh
+token=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`
+curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes --header "Authorization: Bearer $token" --insecure
+
+curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes/node01/proxy/metrics/cadvisor --header "Authorization: Bearer $token" --insecure
+not working, after adding
+  - nodes/proxy
+to the clusterrole prometheus, it works 
+
+this works too.
+curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes/node01/proxy/metrics --header "Authorization:Bearer $token" --insecure
+
+curl 'http://prometheus-pod-ip:9090/api/v1/targets?state=active' | jq

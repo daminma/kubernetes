@@ -1,0 +1,21 @@
+cat > prometheus-service.yaml << EOF
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-service
+  namespace: monitoring
+spec:
+  selector:
+    app: prometheus-server
+  externalIPs:
+  - NODE01_IP
+  ports:
+    - port: 8443
+      targetPort: 9090
+EOF
+
+kubectl apply -f prometheus-service.yaml
+#When the dashboard was deployed, it used externalIPs to bind the service to port 8443. 
+#This makes the dashboard available to outside of the cluster and viewable at 
+#https://2886795324-8443-cykoria03.environments.katacoda.com/
+

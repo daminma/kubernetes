@@ -1,0 +1,41 @@
+
+# https://medium.com/htc-research-engineering-blog/monitoring-kubernetes-clusters-with-grafana-e2a413febefd
+
+###############################################################################################################
+# create the deployment of prometheus
+cat > 05-deployment-configmap.yaml << EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ labels:
+  name: prometheus
+ name: prometheus
+ namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+   matchLabels:
+    app: prometheus-server
+  template:
+   metadata:
+    labels:
+     app: prometheus-server
+   spec:
+    serviceAccountName: prometheus
+    
+    containers:
+    - name: prometheus
+      image: prom/prometheus
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 9090
+          protocol: TCP
+      volumeMounts:
+        - mountPath: "/etc/prometheus"
+          name: config-prometheus
+    volumes:
+    - name: config-prometheus
+      configMap:
+       name: prometheus-config
+EOF
+kubectl apply -f 05-deployment-configmap.yaml

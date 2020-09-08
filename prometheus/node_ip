@@ -1,0 +1,3 @@
+node01_ip=$(kubectl get node -o wide | grep node01 | awk '{print $6}')
+sed 's/NODE01_IP/'"$node01_ip"'/' 06-externalip.yaml > 1
+cp 1 06-externalip.yaml

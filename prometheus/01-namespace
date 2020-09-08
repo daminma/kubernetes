@@ -1,0 +1,12 @@
+
+# https://medium.com/htc-research-engineering-blog/monitoring-kubernetes-clusters-with-grafana-e2a413febefd
+
+###############################################################################################################
+# 1. create the monitoring namespace:
+cat > 01-namespace.yaml << EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: monitoring
+EOF
+kubectl apply -f 01-namespace.yaml
