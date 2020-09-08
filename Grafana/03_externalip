@@ -1,15 +1,18 @@
+cat > 03_externalip.yaml <<EOF
 kind: Service
 apiVersion: v1
 metadata:
-  name: dma-service
+  name: grafana-service
+  namespace: monitoring
 spec:
   selector:
-    app: apple
+    app: grafana
   externalIPs:
   - NODE01_IP
   ports:
     - port: 8443
-      targetPort: 5678
+      targetPort: 3000
+EOF
 
 #When the dashboard was deployed, it used externalIPs to bind the service to port 8443. 
 #This makes the dashboard available to outside of the cluster and viewable at 

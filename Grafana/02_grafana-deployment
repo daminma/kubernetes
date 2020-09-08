@@ -1,9 +1,11 @@
+cat > 02_grafana-deployment.yaml << EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: grafana
   name: grafana
+  namespace: monitoring
 spec:
   replicas: 1
   selector:
@@ -15,7 +17,7 @@ spec:
         app: grafana
     spec:
       containers:
-      - image: grafana/grafana:5.4.3
+      - image: grafana/grafana
         name: grafana
         ports:
         - containerPort: 3000
@@ -32,4 +34,5 @@ spec:
         runAsNonRoot: true
         runAsUser: 65534
         fsGroup: 472
-
+EOF
+kubectl apply -f 02_grafana-deployment.yaml

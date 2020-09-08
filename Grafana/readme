@@ -1,0 +1,25 @@
+# https://www.katacoda.com/courses/kubernetes/getting-started-with-kubeadm
+
+# please install prometheus first.
+
+01_grafana-storage			# create the persistent storage for grafana due the the fact that we might need to restart the pod
+02_grafana-deployment			# create the deployment without the grafana-kubernetes-app, need to manually install as below
+02_grafana-kubernetes-app-deployment 	# create the deployment with grafana-kubernetes-app install
+03_externalip				# create the externalip service for grafana to be accessed via
+					# https://2886795320-8443-kitek05.environments.katacoda.com
+do_it					# read me
+node_ip					# get node ip for externalip
+
+
+# manual install grafana-kubernetes-app
+
+pod=$(k get pod -l app=grafana | grep -v NAME | awk '{print $1}')
+sleep 30
+kubectl exec -it $pod  grafana-cli plugins install grafana-kubernetes-app
+# restart the pod to pickup the change, the new plugin will be install into the 
+# persistent storage /var/lib/grafana
+kubectl scale deployment grafana --replicas=0
+sleep 30
+kubectl scale deployment grafana --replicas=1
+
+#https://2886795320-8443-kitek05.environments.katacoda.com/
