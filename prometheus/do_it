@@ -2,5 +2,8 @@
 ./02-serviceaccount
 ./03-rbac
 ssh node01 mkdir /etc/prometheus
-scp  prometheus-kubelet-cadvisor-pod.yml node01:/etc/prometheus/prometheus.yml
+scp  prometheus.yml node01:/etc/prometheus/prometheus.yml
 ./05-deployment-hostpath
+./06-externalip
+./node_ip
+kubectl apply -f 06-externalip.yaml

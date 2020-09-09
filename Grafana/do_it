@@ -1,7 +1,7 @@
 ./01_grafana-storage
-ssh node01 mdkir /var/lib/grafana
+ssh node01 mkdir /var/lib/grafana
 ssh node01 chmod 777 /var/lib/grafana
-./02_grafana-deployment
+#./02_grafana-deployment
 ./02_grafana-kubernetes-app-deployment
 ./03_externalip
 ./node_ip

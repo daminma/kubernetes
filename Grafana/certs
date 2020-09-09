@@ -1,0 +1,3 @@
+controlplane $ grep certificate-authority-data admin.conf | awk '{print $NF}' | base64 -d > ca.crt
+controlplane $ grep client-certificate-data admin.conf | awk '{print $NF}' | base64 -d > client.crt
+controlplane $ grep client-key-data admin.conf | awk '{print $NF}' | base64 -d > client.key
