@@ -1,0 +1,2 @@
+./01_node-exporter-deploy.yml
+./02_node-exporter-svc.yml

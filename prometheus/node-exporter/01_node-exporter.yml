@@ -6,12 +6,14 @@ metadata:
 spec: 
   selector: 
     matchLabels: 
+      app: node-exporter
       daemon: node-exporter
       grafanak8sapp: "true"
   template: 
     metadata: 
       name: node-exporter
-      labels: 
+      labels:
+        app: node-exporter 
         daemon: node-exporter
         grafanak8sapp: "true"
     spec: 
