@@ -1,4 +1,4 @@
 
-./01_kube-state-metrics-rbac.yml
-./02_kube-state-metrics-deploy.yml
+kubectl apply -f 01_kube-state-metrics-rbac.yml
+kubectl apply -f 02_kube-state-metrics-deploy.yml
 ./03_kube-state-metrics-svc

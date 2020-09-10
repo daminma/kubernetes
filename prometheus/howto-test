@@ -43,7 +43,13 @@ to the clusterrole prometheus, it works
 
 this works too.
 curl https://kubernetes.default.svc.cluster.local:443/api/v1/nodes/node01/proxy/metrics --header "Authorization:Bearer $token" --insecure
-# check target
+
+#################################### promethues ############################
+# check prometheus target
 curl 'http://prometheus-pod-ip:9090/api/v1/targets?state=active' | jq
-# check config
+
+# check prometheus config file
 curl http://localhost:9090/api/v1/status/config
+
+# test prometheus metrics
+curl prometheus-pod-ip:9090/metrics

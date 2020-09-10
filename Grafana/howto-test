@@ -1,0 +1,14 @@
+sometimes, the metrics that grafana use doesn't match the metrics that node-exporter use
+for example, on grafana, i see metrics
+
+node_memory_MemTotal
+
+is used to memory, and no data is comming in, when i checked the node-exporter metrics
+
+curl http://172.17.0.80:9100/metrics | grep node_memory_MemTotal 
+
+i see
+
+node_memory_MemTotal_bytes instead of node_memory_MemTotal
+
+as soon as i change it to node_memory_MemTotal_bytes under edit-metrics, i see data comming in.

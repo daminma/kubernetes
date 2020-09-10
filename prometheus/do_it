@@ -6,4 +6,4 @@ scp  prometheus.yml node01:/etc/prometheus/prometheus.yml
 ./05-deployment-hostpath
 ./06-externalip
 ./node_ip
-kubectl apply -f 06-externalip.yaml
+#kubectl apply -f 06-externalip.yaml

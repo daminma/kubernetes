@@ -1,1 +1,1 @@
-k expose deployment -n monitoring kube-state-metrics
+kubectl expose deployment -n monitoring kube-state-metrics
