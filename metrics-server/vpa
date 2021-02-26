@@ -1,0 +1,4 @@
+https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
+
+Automatically adjusting/suggesting resources needed by containers 
+don't set the resources limits

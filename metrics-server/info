@@ -1,3 +1,5 @@
+https://github.com/kubernetes-sigs/metrics-server
+
 Metrics Server collects resource metrics from Kubelets and exposes them in Kubernetes apiserver 
 through Metrics API for use by Horizontal Pod Autoscaler and Vertical Pod Autoscaler. 
 Metrics API can also be accessed by kubectl top, making it easier to debug autoscaling pipelines.
@@ -9,3 +11,108 @@ or as a source of monitoring solution metrics.
 in other word, metrics server is only for pod autoscaler, don't use it with prometheus.
 it based sacle decision completely on
 CPU/Memory and nothing else.
+
+Deployment
+Metrics Server installation manifests are uploaded with GitHub release.
+
+They are available as components.yaml asset on Metrics Server releases making them installable via url:
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+
+WARNING: You should no longer use manifests from master branch (previously available in deploy/kubernetes directory). 
+They are now meant solely for development.
+
+wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+vi components.yaml
+under deployment, add the following, otherwise, metrics-server won't collect data and throw error. i think coredns need to fix.
+Get https://node02:10250/stats/summary?only_cpu_and_memory=true: dial tcp: lookup node02 on 10.96.0.10:53: no such host]
+
+  - --kubelet-insecure-tls
+  - --kubelet-preferred-address-types=InternalIP
+
+master $ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+serviceaccount/metrics-server created
+deployment.apps/metrics-server created
+service/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+
+
+to create a hpa associate with a deployment
+
+kubectl autoscale deploy nginx --min 1 --max 5 --cpu-percent 20
+
+remember, in order to use autoscale, pod has to be configured to use resources limits, otherwise, you see unknown in the autoscale status
+
+orizontalpodautoscaler.autoscaling/nginx   Deployment/nginx   <unknown>/20%   1         5         0          7s
+
+master $ k describe hpa nginx
+tells you the failure
+
+now let's delete the hpa and add cpu resources limit to the nginx deployment
+kubectl edit deployment nginx
+   resources:   
+     limits:
+       cpu: 0.1
+     requests:
+       cpu: 0.1
+
+recreate the hpa and check
+kubectl describe hpa nginx
+kubecto top pods
+
+install siege to test
+apt install -y siege
+
+run siege to overload ngnix
+siege -q -c 5 -t 2m http://nginx-svc
+
+check the nginx pod count goes up to 5(max) and hpa message to see autoscale is working
+
+and water pod goes down to 1(min) few minutes after siege stop
+
+
+
+
+ter $ k describe hpa nginx
+Name:                                                  nginx
+Namespace:                                             default
+Labels:                                                <none>
+Annotations:                                           <none>
+CreationTimestamp:                                     Thu, 17 Sep 2020 17:19:13 +0000
+Reference:                                             Deployment/nginx
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  0% (0) / 20%
+Min replicas:                                          1
+Max replicas:                                          5
+Deployment pods:                                       1 current / 1 desired
+Conditions:
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooFewReplicas    the desired replica count is less than the minimum replica count
+Events:
+  Type    Reason             Age    From                       Message
+  ----    ------             ----   ----                       -------
+  Normal  SuccessfulRescale  8m25s  horizontal-pod-autoscaler  New size: 3; reason: cpu resource utilization (percentage of request) above target
+  Normal  SuccessfulRescale  7m24s  horizontal-pod-autoscaler  New size: 5; reason: cpu resource utilization (percentage of request) above target
+  Normal  SuccessfulRescale  35s    horizontal-pod-autoscaler  New size: 1; reason: All metrics below target
+
+
+
+describe deployment:
+
+  Normal  ScalingReplicaSet  30m    deployment-controller  Scaled up replica set nginx-f89759699 to 1
+  Normal  ScalingReplicaSet  20m    deployment-controller  Scaled up replica set nginx-869f6d9686 to 1
+  Normal  ScalingReplicaSet  20m    deployment-controller  Scaled down replica set nginx-f89759699 to 0
+  Normal  ScalingReplicaSet  17m    deployment-controller  Scaled up replica set nginx-775cbfc48c to 1
+  Normal  ScalingReplicaSet  17m    deployment-controller  Scaled down replica set nginx-869f6d9686 to 0
+  Normal  ScalingReplicaSet  8m20s  deployment-controller  Scaled up replica set nginx-775cbfc48c to 3
+  Normal  ScalingReplicaSet  7m19s  deployment-controller  Scaled up replica set nginx-775cbfc48c to 5
+  Normal  ScalingReplicaSet  30s    deployment-controller  Scaled down replica set nginx-775cbfc48c to 1
+
